@@ -30,4 +30,4 @@ build-backend = "hatchling.build"
 
 # Package discovery
 [tool.hatch.build.targets.wheel]
-packages = ["src/mcp_server"]
+packages = ["src/"]
