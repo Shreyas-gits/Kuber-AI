@@ -1,6 +1,18 @@
-## Ignore virtual environment
+# Ignore virtual environment
 .venv/ 
+
+# Ignore .env (environment variable)
+*.env
 
 # Ignore cache files
 __pycache__/
 .ruff_cache/
+
+# Ignore .sh file
+activate_env.sh
+
+# Ignore kubeconfig files (contain sensitive credentials)
+kubeconfig*.yaml
+kubeconfig*.yml
+**/kubeconfig*.yaml
+**/kubeconfig*.yml
