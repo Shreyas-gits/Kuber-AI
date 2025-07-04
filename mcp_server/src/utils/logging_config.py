@@ -5,6 +5,9 @@ for the Model Context Protocol server components.
 """
 
 import logging.config
+import os
+
+LOGGING_LEVEL = os.environ.get("LOGGING_LEVEL", "INFO").strip('"').upper()
 
 
 class ColorFormatter(logging.Formatter):
@@ -35,9 +38,12 @@ class ColorFormatter(logging.Formatter):
         levelname = record.levelname
         color = self.COLORS.get(levelname, self.COLORS["RESET"])
         reset = self.COLORS["RESET"]
-        record.levelname = f"{color}{levelname}{reset}"
-        record.name = f"\033[1m{record.name}{reset}"
-        return super().format(record)
+        original_format = self._style._fmt
+        self._style._fmt = f"{color}{original_format}{reset}"
+        try:
+            return super().format(record)
+        finally:
+            self._style._fmt = original_format
 
 
 logging_config = {
@@ -54,7 +60,7 @@ logging_config = {
             "stream": "ext://sys.stdout",
         }
     },
-    "loggers": {"root": {"handlers": ["console"], "level": "INFO", "propagate": False}},  # root logger
+    "loggers": {"root": {"handlers": ["console"], "level": LOGGING_LEVEL, "propagate": False}},  # root logger
 }
 
 

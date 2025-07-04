@@ -1,50 +1,50 @@
-"""Kubernetes API tool for mcp_server."""
+"""Kubernetes API connector for mcp_server.
+
+This module provides a singleton class for interacting with the Kubernetes API server.
+It supports retrieving pods, deployments, services, namespaces, pod logs, and executing
+kubectl-like commands using the Kubernetes Python client.
+"""
 
 import logging
+import os
 from typing import Any, Dict, Optional
 
 from kubernetes import client, config
 from kubernetes.client.rest import ApiException
 
+from ..utils.singleton import Singleton
 
-class KubernetesAPIConnector:
-    """Tool for interacting with Kubernetes API server."""
+logger = logging.getLogger(__name__)
 
-    def __init__(self):
-        """Initialize the Kubernetes API tool."""
-        self.logger = logging.getLogger(__name__)
-        self.api_client = None
-        self.v1_client = None
-        self.apps_v1_client = None
-        self._initialize_kubernetes_client()
 
-    def _initialize_kubernetes_client(self):
-        """Initialize Kubernetes client with proper configuration."""
-        try:
-            # Try to load in-cluster config first (if running in a pod)
+class KubernetesAPIConnector(metaclass=Singleton):
+    """Singleton connector for interacting with the Kubernetes API server.
+
+    This class provides methods to:
+      - List pods, deployments, services, and namespaces
+      - Retrieve pod logs
+      - Execute basic kubectl-like commands via the API
+    """
+
+    def __init__(self, config_loaded: bool = False):
+        """Initialize the Kubernetes API connector and clients using in-cluster config."""
+        if not config_loaded:
             config.load_incluster_config()
-            self.logger.info("Loaded in-cluster Kubernetes configuration")
-        except config.ConfigException:
-            try:
-                # Try to load MicroK8s kubeconfig file first
-                import os
-
-                microk8s_config_path = os.path.join(os.path.dirname(__file__), "../../../kubeconfig-microk8s.yaml")
-                if os.path.exists(microk8s_config_path):
-                    config.load_kube_config(config_file=microk8s_config_path)
-                    self.logger.info(f"Loaded MicroK8s kubeconfig from {microk8s_config_path}")
-                else:
-                    # Fall back to default kubeconfig file
-                    config.load_kube_config()
-                    self.logger.info("Loaded default kubeconfig file")
-            except config.ConfigException:
-                self.logger.warning("Could not load Kubernetes configuration")
-                return
-
-        # Create API clients
+            logger.info("Loaded in-cluster Kubernetes configuration")
         self.api_client = client.ApiClient()
         self.v1_client = client.CoreV1Api()
         self.apps_v1_client = client.AppsV1Api()
+
+    @classmethod
+    def from_config(cls, kubeconfig_path: str = None):
+        """Create an instance using a kubeconfig file."""
+        if kubeconfig_path and os.path.exists(kubeconfig_path):
+            config.load_kube_config(config_file=kubeconfig_path)
+            logger.info(f"Loaded kubeconfig from {kubeconfig_path}")
+        else:
+            logger.error(f"Failed to load kubeconfig check if the file exists: {kubeconfig_path}")
+            raise RuntimeError("Could not load any Kubernetes configuration")
+        return cls(config_loaded=True)
 
     def get_pods(self, namespace: str = "default", label_selector: Optional[str] = None) -> Dict[str, Any]:
         """Get pods from the specified namespace.

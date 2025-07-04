@@ -1,12 +1,17 @@
-"""Main entry point for the mcp_server package."""
+"""Main entry point for the mcp_server."""
 
+import logging
+
+from dotenv import load_dotenv
 from mcp.server.fastmcp import FastMCP
 
-from src.tools.kubernetes_api_tool import register_kubernetes_tools
-from src.utilities.configure_logging import setup_logging
+load_dotenv()
+from src.tools.tool_loader import register_kubernetes_tools  # noqa E402
+from src.utils.logging_config import setup_logging  # noqa E402
 
 # setup logging
 setup_logging()
+logger = logging.getLogger(__name__)
 
 # Create an MCP server
 mcp = FastMCP("Kubernetes MCP Server", version="0.1.0", author="Shreyas")
@@ -15,5 +20,7 @@ mcp = FastMCP("Kubernetes MCP Server", version="0.1.0", author="Shreyas")
 register_kubernetes_tools(mcp)
 
 if __name__ == "__main__":
+    logger.info("🚀 Starting MCP server. 🚀")
+
     # Run the MCP server
     mcp.run()
