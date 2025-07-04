@@ -16,6 +16,7 @@ dependencies = [
     "requests>=2.32.4",
     "typing-extensions>=4.0.0",
     "mcp>=1.0.0",
+    "langroid>=0.56.10",
 ]
 
 # Optional dependencies for development

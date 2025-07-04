@@ -20,7 +20,10 @@ mcp = FastMCP("Kubernetes MCP Server", version="0.1.0", author="Shreyas")
 register_kubernetes_tools(mcp)
 
 if __name__ == "__main__":
-    logger.info("🚀 Starting MCP server. 🚀")
+    logger.info("🚀 Starting MCP server🚀")
 
-    # Run the MCP server
+    # http_mcp_app = mcp.streamable_http_app()
+    # # Run the MCP server
+    # uvicorn.run(http_mcp_app, host="0.0.0.0", port=8080)
+
     mcp.run()
