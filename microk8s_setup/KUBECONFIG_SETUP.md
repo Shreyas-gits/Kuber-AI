@@ -21,6 +21,11 @@ This directory contains utilities to set up kubeconfig for connecting to a Micro
 
 This will create a `kubeconfig-microk8s.yaml` file with the correct certificates and credentials.
 
+4. **In mcp_server/src/.env file add:
+   ```bash
+   KUBERNETES_CONFIG_FILE = "path-to-kubeconfig-microk8s.yaml"
+   ```
+
 ## Usage
 
 ### Option 1: Use with Environment Variable
@@ -85,17 +90,3 @@ microk8s enable dns dashboard storage
 - Consider using RBAC to limit permissions for the service account
 - For production, consider using token-based authentication instead of certificates
 
-## Testing the Connection
-
-After setting up the kubeconfig, you can test the connection:
-
-```python
-from connector.kubernetes_connector import KubernetesAPIConnector
-
-# Initialize the connector
-k8s = KubernetesAPIConnector()
-
-# Test the connection
-namespaces = k8s.get_namespaces()
-print(namespaces)
-```

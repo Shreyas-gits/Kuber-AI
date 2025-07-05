@@ -1,6 +1,6 @@
-# Running MCP Server Locally
+# Running MCP Client Locally
 
-Follow these steps to run the MCP server on your local machine:
+Follow these steps to run the MCP client on your local machine:
 
 ## 1. Go to the Project Root Folder
 
@@ -29,11 +29,11 @@ This will create a `.venv` folder and install everything from `uv.lock`.
   .venv\Scripts\activate
   ```
 
-## 4. Run the MCP Server
+## 4. Run the MCP client
 
 ```bash
 
-python -m mcp_server.main
+python -m mcp_client.main
 ```
 
-The MCP server will start and be available at: [http://127.0.0.1:8000/mcp](http://127.0.0.1:8000/mcp)
+The MCP client will start and be available at: [http://127.0.0.1:8080/](http://127.0.0.1:8080/mcp)
