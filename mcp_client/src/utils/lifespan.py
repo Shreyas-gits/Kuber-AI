@@ -11,7 +11,8 @@ import os
 from contextlib import asynccontextmanager
 
 from fastapi import FastAPI
-from fastmcp import Client
+from mcp import ClientSession
+from mcp.client.streamable_http import streamablehttp_client
 
 logger = logging.getLogger(__name__)
 
@@ -29,29 +30,30 @@ async def lifespan(app: FastAPI):
     Yields:
         None
     """
-    mcp_url = os.getenv("MCP_SERVER_URL", "http://127.0.0.1:8000/mcp/")
+    mcp_server_url = os.getenv("MCP_SERVER_URL", "http://127.0.0.1:8000/mcp/")
     try:
-        logger.info(f"Initializing FastMCP client with URL: {mcp_url}")
-        mcp_client = Client(mcp_url)
-        async with mcp_client:
-            await mcp_client.ping()
-        app.state.mcp_client = mcp_client
+        logger.info(f"Initializing FastMCP client with URL: {mcp_server_url}")
+        read, write, _ = await streamablehttp_client(mcp_server_url).__aenter__()
+        session = ClientSession(read, write)
+        await session.initialize()
+
+        app.state.mcp_session = session
         yield
     except Exception as e:
         logger.error(f"Failed to initialize FastMCP client: {e}")
     finally:
-        if hasattr(app.state, "mcp_client"):
-            mcp_client = app.state.mcp_client
+        if hasattr(app.state, "mcp_session"):
+            session = app.state.mcp_session
             logger.info("Cleaning up FastMCP client.")
-            if hasattr(mcp_client, "aclose"):
-                await mcp_client.aclose()
+            if hasattr(session, "aclose"):
+                await session.aclose()
                 logger.info("FastMCP client closed asynchronously.")
-            elif hasattr(mcp_client, "close"):
-                mcp_client.close()
+            elif hasattr(session, "close"):
+                session.close()
                 logger.info("FastMCP client closed synchronously.")
         else:
             logger.critical(
-                f"FastMCP client was not initialized. The MCP server URL '{mcp_url}' "
+                f"FastMCP client was not initialized. The MCP server URL '{mcp_server_url}' "
                 "may be incorrect. Shutting down application."
             )
             raise RuntimeError(

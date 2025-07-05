@@ -19,7 +19,7 @@ Use `from_config` to initialize with a kubeconfig file or default to in-cluster 
 """
 
 
-def kubernetes_read_tool(
+def kubernetes_read(
     resource_type: str = "pods",
     namespace: str = "default",
     label_selector: str = "",

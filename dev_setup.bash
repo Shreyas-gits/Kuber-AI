@@ -97,6 +97,11 @@ echo "Installing pre-commit hooks..."
 uv run pre-commit install
 print_status "Pre-commit hooks installed"
 
+# Run pre-commit on all files to test
+echo "Running pre-commit on all files..."
+uv run pre-commit run --all-files
+print_status "Pre-commit hooks tested successfully"
+
 echo ""
 echo -e "${GREEN}🎉 Development environment setup complete!${NC}"
 echo ""
