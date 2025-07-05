@@ -28,6 +28,9 @@ def register_kubernetes_tools(mcp: FastMCP):
         return kubernetes_read_tool(*args, k8s_connector=k8s_connector, **kwargs)
 
     mcp.tool(
-        description="Reads resources from the Kubernetes cluster using the provided connector. input to the tool will be resource_type: str,namespace: str,label_selector: str"
+        description="Reads resources from the Kubernetes cluster using the provided connector. "
+        "input to the tool will be resource_type: str,namespace: str,label_selector: str."
+        "if namespace is not provided, it will be set to 'default'."
+        "If label_selector is not provided, it will be set to empty string."
     )(kubernetes_read_tool_wrapper)
     logger.info("✅ Kubernetes API tools registered successfully.")

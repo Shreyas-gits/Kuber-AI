@@ -69,7 +69,9 @@ class KubernetesAPIConnector(metaclass=Singleton):
                     "namespace": pod.metadata.namespace,
                     "status": pod.status.phase,
                     "node": pod.spec.node_name,
-                    "created": pod.metadata.creation_timestamp.isoformat() if pod.metadata.creation_timestamp else None,
+                    "created": (
+                        pod.metadata.creation_timestamp.isoformat() if pod.metadata.creation_timestamp else None
+                    ),
                     "labels": pod.metadata.labels or {},
                     "containers": [
                         {
@@ -213,7 +215,11 @@ class KubernetesAPIConnector(metaclass=Singleton):
             return {"error": f"Unexpected error: {e}"}
 
     def get_pod_logs(
-        self, pod_name: str, namespace: str = "default", container: Optional[str] = None, lines: int = 100
+        self,
+        pod_name: str,
+        namespace: str = "default",
+        container: Optional[str] = None,
+        lines: int = 100,
     ) -> Dict[str, Any]:
         """Get logs from a specific pod.
 

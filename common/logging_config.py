@@ -50,7 +50,10 @@ logging_config = {
     "version": 1,
     "disable_existing_loggers": False,
     "formatters": {
-        "colored": {"()": ColorFormatter, "format": "[%(asctime)s] [%(levelname)s] [%(name)s]: %(message)s"}
+        "colored": {
+            "()": ColorFormatter,
+            "format": "[%(asctime)s] [%(levelname)s] [%(name)s]: %(message)s",
+        }
     },
     "handlers": {
         "console": {

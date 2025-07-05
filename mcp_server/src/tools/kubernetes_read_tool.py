@@ -55,4 +55,9 @@ def kubernetes_read_tool(
         return [TextContent(type="text", text=json.dumps(result, indent=2, default=str))]
 
     except Exception as e:
-        return [TextContent(type="text", text=json.dumps({"error": f"Tool execution failed: {str(e)}"}, indent=2))]
+        return [
+            TextContent(
+                type="text",
+                text=json.dumps({"error": f"Tool execution failed: {str(e)}"}, indent=2),
+            )
+        ]

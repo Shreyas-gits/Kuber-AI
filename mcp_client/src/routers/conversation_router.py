@@ -17,7 +17,6 @@ from fastmcp import Client
 from langchain.agents import Tool
 from langchain_core.messages import HumanMessage
 from langchain_google_genai import ChatGoogleGenerativeAI
-from langgraph.graph import StateGraph
 from langgraph.prebuilt import create_react_agent
 
 from mcp_client.src.models.conversation_model import AskRequest
@@ -82,29 +81,17 @@ async def ask_endpoint(request: AskRequest, fastapi_request: Request):
 
     # Create LangGraph ReAct agent with LLM and tools
     logger.info("Creating LangGraph ReAct agent")
-    agent_node = create_react_agent(llm, langchain_tools)
+    agent = create_react_agent(llm, langchain_tools)
     logger.debug("ReAct agent created successfully")
 
-    # Build the LangGraph graph
-    logger.info("Building LangGraph state graph")
-    builder = StateGraph(ConversationState)
-    builder.add_node("agent", agent_node)
-    builder.set_entry_point("agent")
-    graph = builder.compile()
-    logger.debug("LangGraph state graph compiled successfully")
-
     try:
-        # Run the LangGraph agent with the user's query
-        logger.info("Invoking LangGraph agent with user query")
-        output = await graph.ainvoke({"messages": [HumanMessage(content=request.query)]})
+        output = await agent.ainvoke({"messages": [HumanMessage(content=request.query)]})
         logger.info("Agent execution completed successfully")
-        logger.debug(f"Agent output: {output}")
-
-        # Extract the final message content from the output
-        final_message = output.get("messages", [])[-1] if output.get("messages") else None
-        response_content = {"output": final_message.content if final_message else "No output"}
-        logger.info("Returning successful response")
-        return JSONResponse(status_code=status.HTTP_200_OK, content=response_content)
+        response_content = output.get("messages", [])
+        return JSONResponse(
+            status_code=status.HTTP_200_OK,
+            content=response_content[-1].content if response_content else {"message": "No response from agent"},
+        )
     except Exception as e:
         logger.error(f"Error during agent execution: {str(e)}", exc_info=True)
         error_response = {"error": str(e)}

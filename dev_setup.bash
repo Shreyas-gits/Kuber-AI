@@ -92,24 +92,10 @@ echo "Installing dependencies..."
 uv sync
 print_status "Dependencies installed from uv.lock"
 
-# Install pre-commit if not already installed
-echo "Setting up pre-commit..."
-if uv run python -c "import pre_commit" 2>/dev/null; then
-    print_status "pre-commit is already installed"
-else
-    uv add --dev pre-commit
-    print_status "pre-commit installed"
-fi
-
 # Install pre-commit hooks
 echo "Installing pre-commit hooks..."
 uv run pre-commit install
 print_status "Pre-commit hooks installed"
-
-# Add pre-commit dependencies to dev requirements
-echo "Adding pre-commit tools to dev dependencies..."
-uv add --dev black ruff
-print_status "Dev dependencies added"
 
 echo ""
 echo -e "${GREEN}🎉 Development environment setup complete!${NC}"

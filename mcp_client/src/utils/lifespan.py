@@ -51,7 +51,8 @@ async def lifespan(app: FastAPI):
                 logger.info("FastMCP client closed synchronously.")
         else:
             logger.critical(
-                f"FastMCP client was not initialized. The MCP server URL '{mcp_url}' may be incorrect. Shutting down application."
+                f"FastMCP client was not initialized. The MCP server URL '{mcp_url}' "
+                "may be incorrect. Shutting down application."
             )
             raise RuntimeError(
                 "FastMCP client was not initialized. Please check the MCP_SERVER_URL environment variable."
