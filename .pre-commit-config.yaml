@@ -10,4 +10,4 @@ repos:
       - id: ruff
         args: ["--fix","--unsafe-fixes"]
 
-default_stages: [commit]
+default_stages: [pre-commit]

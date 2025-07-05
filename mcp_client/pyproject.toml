@@ -21,7 +21,7 @@ dependencies = [
 
 # Optional dependencies for this component
 [dependency-groups]
-dev = [
+test = [
     "pytest>=7.0.0",
     "pytest-asyncio>=0.21.0",
 ]

@@ -1,3 +1,0 @@
-"""Main entry point for the mcp_client package."""
-
-# ...existing code...

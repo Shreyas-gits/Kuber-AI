@@ -1,39 +1,34 @@
-# Running MCP Server Locally
+# Running the MCP Server Locally
 
-Follow these steps to run the MCP server on your local machine:
+Follow the instructions below to set up and launch the MCP server on your local machine.
 
-## 1. Go to the Project Root Folder
-
-```bash
-cd /<path-to-project>/project_KuberAi
-```
-
-## 2. Install Dependencies and Create Virtual Environment
-
-Use [uv](https://github.com/astral-sh/uv) to install all dependencies (including optional ones) and create a `.venv`:
+## 1. Navigate to the Project Root Directory
 
 ```bash
-uv venv --all
+cd <path-to-project>/Kuber-AI
 ```
 
-This will create a `.venv` folder and install everything from `uv.lock`.
+## 2. Activate the Python Virtual Environment
 
-## 3. Activate the Python Virtual Environment
-
-- On Linux/macOS:
+- **Linux/macOS:**
   ```bash
   source .venv/bin/activate
   ```
-- On Windows:
+- **Windows:**
   ```cmd
   .venv\Scripts\activate
   ```
 
-## 4. Run the MCP Server
+## 3. Configure Environment Variables
+
+Create a `.env` file in the `/mcp_server` directory using the provided `.env.sample` as a template.
+
+[Sample Environment File](./.env.sample)
+
+## 4. Start the MCP Server
 
 ```bash
-
 python -m mcp_server.main
 ```
 
-The MCP server will start and be available at: [http://127.0.0.1:8000/mcp](http://127.0.0.1:8000/mcp)
+Once started, the MCP server will be available at: [http://127.0.0.1:8000/mcp](http://127.0.0.1:8000/mcp)

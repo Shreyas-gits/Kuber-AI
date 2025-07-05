@@ -11,46 +11,23 @@ KuberAI is an intelligent Kubernetes management platform that integrates generat
 ## Features
 
 - 🤖 **AI-Powered Monitoring**: Continuous cluster health monitoring with intelligent analysis
-- 🔍 **Issue Detection**: Automated identification of cluster problems and anomalies
 - 🛠️ **Smart Debugging**: AI-assisted troubleshooting with actionable recommendations
 - 📊 **Real-time Analytics**: Comprehensive cluster metrics and performance insights
-- 🚨 **Intelligent Alerting**: Context-aware notifications and alerts
 - 💡 **Optimization Suggestions**: AI-driven recommendations for resource optimization
 
-## High-Level Design
+## Architecture
 
-![KuberAI High-Level Design](./docs/attachments/Kuber%20AI%20HLD.png)
+- [High Level Design](./docs/architecture/High%20Level%20Design.md)
 
 ## Getting Started
 
-### Prerequisites
-
-- Kubernetes cluster (v1.20+)
-- kubectl configured
-- Python (v3.8+)
-- Docker
-
-#### Development Prerequisites
-
-- Git
-- curl (for uv installation)
-- A terminal with bash/zsh support
-
-### Installation
+### Installation Development Setup
 
 ```bash
 # Clone the repository
 git git clone https://github.com/Shreyas-gits/Kuber-AI.git
 cd Kuber-AI
-
-# Install dependencies
-npm install  # or pip install -r requirements.txt
-
-# Configure cluster connection
-kubectl config current-context
 ```
-
-### Development Setup
 
 For development, we use `uv` for Python package management and virtual environments. The repository includes an automated setup script:
 
@@ -92,52 +69,40 @@ uv run pre-commit install
 ```bash
 # Activate virtual environment
 source .venv/bin/activate
-# Or use the shortcut script
-./activate_env.sh
 
 # Run pre-commit on all files
 uv run pre-commit run --all-files
 
-# Run specific workspace components
-uv run --directory mcp_server python -m src.main
-uv run --directory mcp_client python -m src.main
-
 # Add new dependencies
 uv add package-name
-uv add --dev dev-package-name
+
+# Remove dependency
+uv remove package-name
+
+# Install or sync packages added to pyproject.toml
+uv sync
 ```
 
 ### Quick Start
 
-```bash
-# Deploy KuberAI to your cluster
-kubectl apply -f deployment/
+This application enables interaction with Kubernetes clusters using natural language.
 
-# Access the dashboard
-kubectl port-forward svc/kuberai-dashboard 8080:80
+**Prerequisites:**
 
-# Open http://localhost:8080 in your browser
-```
+- An active Kubernetes cluster.
 
-## Usage
+For local development, you can set up a single-node cluster using MicroK8s.  
+Refer to the [MicroK8s Setup Guide](./microk8s_setup/microk8s%20setup.md) for detailed instructions.
 
-1. **Connect your cluster**: Configure KuberAI to monitor your Kubernetes cluster
-2. **View dashboard**: Access real-time cluster insights and AI recommendations
-3. **Receive alerts**: Get notified about potential issues before they impact your workloads
-4. **Apply suggestions**: Implement AI-recommended optimizations and fixes
+For instructions on running the MCP Server locally, see:  
+[Running the MCP Server](./mcp_server/README.md)
 
-## Architecture
-
-KuberAI consists of several key components:
-
-- **AI Engine**: Core machine learning models for analysis and recommendations
-- **Cluster Monitor**: Kubernetes API integration for real-time data collection
-- **Dashboard**: Web-based interface for visualization and management
-- **Alert Manager**: Intelligent notification and alerting system
+For instructions on running the MCP Client locally, see:  
+[Running the MCP Client](./mcp_client/README.md)
 
 ## Contributing
 
-We welcome contributions! Please see our [Contributing Guidelines](CONTRIBUTING.md) for details.
+We welcome contributions! Please see our [Contributing Guidelines](./docs/CONTRIBUTING.md) for details.
 
 1. Fork the repository
 2. Create a feature branch (`git checkout -b feature/amazing-feature`)

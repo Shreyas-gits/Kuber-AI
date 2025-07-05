@@ -27,6 +27,7 @@ print_error() {
     echo -e "${RED}❌ $1${NC}"
 }
 
+# ------UV Installation and Setup-------
 # Check if uv is installed
 echo "Checking for uv installation..."
 if command_exists uv; then
@@ -88,7 +89,7 @@ fi
 
 # Activate virtual environment and install dependencies
 echo "Installing dependencies..."
-uv sync --dev
+uv sync
 print_status "Dependencies installed from uv.lock"
 
 # Install pre-commit if not already installed
@@ -110,24 +111,11 @@ echo "Adding pre-commit tools to dev dependencies..."
 uv add --dev black ruff
 print_status "Dev dependencies added"
 
-# Create activation script
-echo "Creating activation script..."
-cat > activate_env.sh << 'EOF'
-#!/bin/bash
-# Activate the virtual environment
-source .venv/bin/activate
-echo "Virtual environment activated!"
-echo "To deactivate, run: deactivate"
-EOF
-chmod +x activate_env.sh
-print_status "Activation script created (activate_env.sh)"
-
 echo ""
 echo -e "${GREEN}🎉 Development environment setup complete!${NC}"
 echo ""
 echo "Next steps:"
 echo "1. Activate the virtual environment: source .venv/bin/activate"
-echo "   Or use the shortcut: ./activate_env.sh"
 echo "2. Your dependencies are installed from uv.lock"
 echo "3. Pre-commit is configured and ready to use"
 echo "4. Run 'uv run pre-commit run --all-files' to test pre-commit hooks"

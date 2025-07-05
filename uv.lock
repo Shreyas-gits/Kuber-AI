@@ -663,7 +663,7 @@ dependencies = [
 ]
 
 [package.dev-dependencies]
-dev = [
+test = [
     { name = "pytest" },
     { name = "pytest-asyncio" },
 ]
@@ -680,7 +680,7 @@ requires-dist = [
 ]
 
 [package.metadata.requires-dev]
-dev = [
+test = [
     { name = "pytest", specifier = ">=7.0.0" },
     { name = "pytest-asyncio", specifier = ">=0.21.0" },
 ]
@@ -700,10 +700,6 @@ dependencies = [
 ]
 
 [package.dev-dependencies]
-dev = [
-    { name = "pytest" },
-    { name = "pytest-asyncio" },
-]
 test = [
     { name = "pytest" },
     { name = "pytest-asyncio" },
@@ -722,10 +718,6 @@ requires-dist = [
 ]
 
 [package.metadata.requires-dev]
-dev = [
-    { name = "pytest", specifier = ">=7.0.0" },
-    { name = "pytest-asyncio", specifier = ">=0.21.0" },
-]
 test = [
     { name = "pytest", specifier = ">=7.0.0" },
     { name = "pytest-asyncio", specifier = ">=0.21.0" },
@@ -1100,52 +1092,40 @@ name = "project-kuberai"
 version = "0.1.0"
 source = { editable = "." }
 dependencies = [
+    { name = "black" },
     { name = "fastapi" },
     { name = "fastmcp" },
     { name = "kubernetes" },
     { name = "langchain" },
     { name = "langchain-google-genai" },
     { name = "langgraph" },
-    { name = "pydantic" },
-    { name = "requests" },
-    { name = "typing-extensions" },
-]
-
-[package.dev-dependencies]
-dev = [
-    { name = "black" },
     { name = "pre-commit" },
-    { name = "ruff" },
-]
-test = [
+    { name = "pydantic" },
     { name = "pytest" },
     { name = "pytest-asyncio" },
     { name = "pytest-cov" },
+    { name = "requests" },
+    { name = "ruff" },
+    { name = "typing-extensions" },
 ]
 
 [package.metadata]
 requires-dist = [
+    { name = "black", specifier = ">=25.1.0" },
     { name = "fastapi", specifier = ">=0.115.14" },
     { name = "fastmcp", specifier = ">=2.10.1" },
     { name = "kubernetes", specifier = ">=33.1.0" },
     { name = "langchain", specifier = ">=0.3.26" },
     { name = "langchain-google-genai", specifier = ">=2.1.6" },
     { name = "langgraph", specifier = ">=0.5.1" },
-    { name = "pydantic", specifier = ">=2.0.0" },
-    { name = "requests", specifier = ">=2.32.4" },
-    { name = "typing-extensions", specifier = ">=4.0.0" },
-]
-
-[package.metadata.requires-dev]
-dev = [
-    { name = "black", specifier = ">=25.1.0" },
     { name = "pre-commit", specifier = ">=4.2.0" },
-    { name = "ruff", specifier = ">=0.12.1" },
-]
-test = [
+    { name = "pydantic", specifier = ">=2.0.0" },
     { name = "pytest", specifier = ">=7.0.0" },
     { name = "pytest-asyncio", specifier = ">=0.21.0" },
     { name = "pytest-cov", specifier = ">=4.0.0" },
+    { name = "requests", specifier = ">=2.32.4" },
+    { name = "ruff", specifier = ">=0.12.1" },
+    { name = "typing-extensions", specifier = ">=4.0.0" },
 ]
 
 [[package]]
