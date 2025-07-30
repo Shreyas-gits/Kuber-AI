@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Kuber-AI Chat</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
+</head>
+<body>
+  <header>
+    <h1>Kuber-AI</h1>
+    <div class="theme-toggle">
+      <button id="themeToggle" aria-label="Toggle dark/light mode">
+        <i class="fas fa-moon"></i>
+        <i class="fas fa-sun"></i>
+      </button>
+    </div>
+  </header>
+
+  <main>
+    <div class="chat-container" id="chat">
+      <div class="message assistant">
+        <div class="message-icon">
+          <i class="fas fa-robot"></i>
+        </div>
+        <div class="message-content">
+          Hello! I'm your assistant. Ask me anything about Kubernetes and cloud infrastructure 😊
+        </div>
+      </div>
+    </div>
+
+    <div class="input-container">
+      <textarea id="messageInput" placeholder="Type your message..."></textarea>
+      <button onclick="sendMessage()">
+        <i class="fas fa-paper-plane"></i>
+      </button>
+    </div>
+  </main>
+
+  <script src="script.js"></script>
+</body>
+</html>
