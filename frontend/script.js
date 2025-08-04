@@ -2,6 +2,21 @@ const chat = document.getElementById('chat');
 const input = document.getElementById('messageInput');
 const themeToggle = document.getElementById('themeToggle');
 
+// Configuration variables
+let config = {};
+
+// Load config.json and set config
+async function loadConfig() {
+  try {
+    const response = await fetch('config.json');
+    if (!response.ok) throw new Error('Failed to load config.json');
+    config = await response.json();
+    console.log('Loaded config:', config);
+  } catch (e) {
+    console.error('Could not load config.json:', e);
+  }
+}
+
 // Initialize theme based on user preference
 function initTheme() {
   const savedTheme = localStorage.getItem('theme');
@@ -49,15 +64,18 @@ function appendMessage(role, text) {
   chat.scrollTop = chat.scrollHeight;
 }
 
-function sendMessage() {
+async function sendMessage() {
   const text = input.value.trim();
   if (!text) return;
   
+  // Display user message in the chat
   appendMessage('user', text);
+  
+  // Clear the input field after sending
   input.value = '';
   input.style.height = 'auto';
 
-  // Simulated assistant response
+  // Show typing indicator
   const typingMsg = document.createElement('div');
   typingMsg.className = 'message assistant';
   
@@ -78,10 +96,43 @@ function sendMessage() {
   chat.appendChild(typingMsg);
   chat.scrollTop = chat.scrollHeight;
   
-  setTimeout(() => {
-    typingContent.textContent = `I received: ${text}`;
+  try {
+    // Make API request to MCP client with the user's message
+    const baseUrl = config.MCP_CLIENT_BASE_URL;
+    const endpoint = '/ask';
+    const url = baseUrl + endpoint;
+    
+    // Prepare the payload with the user's query from the input field
+    const payload = {
+      query: text
+    };
+    
+    console.log(`Sending request to ${url}`, payload);
+    
+    const response = await fetch(url, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(payload)
+    });
+    
+    if (!response.ok) {
+      throw new Error(`API request failed with status ${response.status}`);
+    }
+    
+    const data = await response.json();
+    console.log('API response:', data);
+    
+    // Update the typing message with the response
+    typingContent.textContent = data.response || data.message || JSON.stringify(data);
     chat.scrollTop = chat.scrollHeight;
-  }, 800);
+    
+  } catch (error) {
+    console.error('Error calling MCP client:', error);
+    typingContent.textContent = `Error: Failed to get response from server. ${error.message}`;
+    chat.scrollTop = chat.scrollHeight;
+  }
 }
 
 // Event listeners
@@ -99,5 +150,8 @@ input.addEventListener('input', () => {
   input.style.height = input.scrollHeight + 'px';
 });
 
-// Initialize the theme when page loads
-document.addEventListener('DOMContentLoaded', initTheme);
+// Initialize when page loads
+document.addEventListener('DOMContentLoaded', async () => {
+  await loadConfig();
+  initTheme();
+});

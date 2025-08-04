@@ -61,8 +61,23 @@ async def ask_endpoint(request: AskRequest):
                 langchain_tools = await load_mcp_tools(session)
                 agent = create_react_agent(llm, langchain_tools)
 
-                # Execute agent within the session context
-                output = await agent.ainvoke({"messages": [HumanMessage(content=request.query)]})
+                # Build the conversation history as LangChain message objects
+                # Assumes request.messages is a list of dicts/objects with 'role' and 'content'
+                conversation_messages = []
+                for msg in getattr(request, "messages", []):
+                    if msg["role"] == "user":
+                        conversation_messages.append(HumanMessage(content=msg["content"]))
+                    elif msg["role"] == "assistant":
+                        from langchain_core.messages import AIMessage
+
+                        conversation_messages.append(AIMessage(content=msg["content"]))
+                    # Add more roles if needed
+
+                # Add the current user query as the latest message if not already present
+                if not conversation_messages or conversation_messages[-1].content != request.query:
+                    conversation_messages.append(HumanMessage(content=request.query))
+
+                output = await agent.ainvoke({"messages": conversation_messages})
                 logger.info("Agent execution completed successfully")
 
                 response_content = output.get("messages", [])

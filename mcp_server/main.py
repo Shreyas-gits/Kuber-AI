@@ -6,8 +6,8 @@ from dotenv import load_dotenv
 from mcp.server.fastmcp import FastMCP
 
 load_dotenv()
-from mcp_server.src.tools.tool_loader import register_kubernetes_tools  # noqa E402
-from common.logging_config import setup_logging  # noqa E402
+from common.logging_config import setup_logging  # noqa
+from mcp_server.src.tools.tool_loader import register_kubernetes_tools  # noqa
 
 # setup logging
 setup_logging()

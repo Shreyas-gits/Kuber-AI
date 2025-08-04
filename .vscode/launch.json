@@ -1,7 +1,13 @@
 {
     "version": "0.2.0",
     "configurations": [
-        
+        {
+            "name": "Launch Frontend",
+            "request": "launch",
+            "type": "msedge",
+            "url": "http://localhost:5500",
+            "webRoot": "${workspaceFolder}/frontend"
+        },
         {
             "name": "MCP Server",
             "type": "debugpy",
@@ -19,6 +25,6 @@
             "console": "integratedTerminal",
             "justMyCode": false,
             "python": ".venv/bin/python"
-        }
+        },
     ]
 }
